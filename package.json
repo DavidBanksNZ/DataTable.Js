@@ -1,0 +1,25 @@
+{
+  "name": "color-coded-table",
+  "version": "0.0.0",
+  "description": "Javascript library for creating color coded HTML tables",
+  "main": "index.js",
+  "scripts": {
+    "compile": "webpack",
+    "compile:w": "webpack -w"
+  },
+  "keywords": [
+    "color",
+    "tables",
+    "visualization",
+    "visualisation",
+    "colour"
+  ],
+  "author": "David Banks <davidgbanks@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "babel-loader": "^8.0.0-beta.0",
+    "webpack": "^3.10.0"
+  }
+}
