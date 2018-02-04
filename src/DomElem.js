@@ -31,7 +31,7 @@ export class DomElem {
 		let classNameProp = this.element.className;
 
 		if (this.element.className.search(className) === -1) {
-			classNameProp += ' ' + name;
+			classNameProp = classNameProp + ' ' + className;
 			this.element.className = classNameProp.trim();
 		}
 
