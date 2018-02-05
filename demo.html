@@ -5,10 +5,15 @@
 		<style>
 			.dt-table {
 				border-collapse: collapse;
+				font-family: Arial, sans-serif;
 			}
 			.dt-table td, .dt-table th {
 				padding: 8px 14px;
 				border: 1px solid #ccc;
+				text-align: center;
+			}
+			.dt-table tr td:first-child {
+				text-align: left;
 			}
 		</style>
 	</head>
@@ -38,24 +43,86 @@
 					'Avg sunshine'
 				],
 
-				columnLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-				// rowInfo: [
-				// 	{type: 'temperature', year: 'max'},
-				// 	{type: 'temperature', year: 'mean'},
-				// 	{type: 'temperature', year: 'mean'},
-				// 	{type: 'temperature', year: 'mean'},
-				// 	{type: 'temperature', year: 'min'},
-				// 	{type: 'precipitation', year: 'sum'},
-				// 	{type: 'sunshine', year: 'sum'}
-				// ]
+				rowInfo: [
+					{type: 'temperature', year: 'max'},
+					{type: 'temperature', year: 'mean'},
+					{type: 'temperature', year: 'mean'},
+					{type: 'temperature', year: 'mean'},
+					{type: 'temperature', year: 'min'},
+					{type: 'precipitation', year: 'sum'},
+					{type: 'sunshine', year: 'sum'}
+				]
 
 			};
 
+			const climateTheme = {
+
+				name: 'climate',
+
+				themeConfigDefaults: {
+					isMetric: true,
+					unitSwitchingEnabled: true
+				},
+
+				configDefaults: {
+					columnLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+				},
+
+				valueFormatter: (value, row, col, rowInfo, colInfo, opts, extras) => {
+					return rowInfo.type === 'temperature' ? value.toFixed(1) : value;
+				},
+
+				styleFormatter: (value, row, col, rowInfo, colInfo, opts, extras) => {
+					let bg;
+					switch (rowInfo.type) {
+						case 'temperature':
+							bg = extras.temperatureColor(value);
+							break;
+						case 'precipitation':
+							bg = extras.precipitationColor(value);
+							break;
+						case 'sunshine':
+							bg = extras.sunshineColor(value);
+							break;
+						default:
+							bg = null;
+							break;
+					}
+					return {
+						'background-color': bg
+					};
+				},
+
+				preRender: (extras, data) => {
+					extras.temperatureColor = (value) => {
+						return 'lightgreen';
+					};
+					extras.precipitationColor = (value) => {
+						return 'lightblue';
+					};
+					extras.sunshineColor = (value) => {
+						return 'lightyellow';
+					};
+					extras.degCtoF = value => 1.8 * value + 32;
+					extras.degFtoC = value => (value - 32) / 1.8;
+					extras.mmToInches = value => value / 25.4;
+					extras.inchesToMm = value => value * 25.4;
+
+				},
+
+				postRender: function(extras, data) {
+					this.getCell(0, 0).textContent = 'test';
+				}
+
+			};
+
+			ColorCodedTable.addTheme(climateTheme);
+
 			new ColorCodedTable()
+				.theme('climate', {location: 'Paris, France'})
 				.data(parisData.values)
 				.rowLabels(parisData.rowLabels)
-				.columnLabels(parisData.columnLabels)
+				.rowInfo(parisData.rowInfo)
 				.render(document.getElementById('container'));
 		</script>
 	</body>

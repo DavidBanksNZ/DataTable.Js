@@ -74,15 +74,13 @@ export class DomElem {
 		return this;
 	}
 
-	find(selector, root) {
-		const parent = root || document;
-		const element = parent.querySelector(selector);
+	find(selector) {
+		const element = this.element.querySelector(selector);
 		return element ? new DomElem(element) : null;
 	}
 
-	findAll(selector, root) {
-		const parent = root || document;
-		let elements =  parent.querySelectorAll(selector);
+	findAll(selector) {
+		let elements =  this.element.querySelectorAll(selector);
 		elements = [].concat.apply([], elements);
 		return elements.map(elem => new DomElem(elem));
 	}
